@@ -1,81 +1,81 @@
 # deep-learning-project-examination-Sign-Language-ASL
 
-Projet de deep learning realise dans le cadre du module **Deep Learning** du master **Ingenierie des Systemes d'Information & IA**.
+Deep learning project completed in **2025** for the **Deep Learning** module of the M1 SI2A program.
 
-## Objectif
+## Overview
 
-Le projet compare deux approches pour reconnaitre les lettres statiques de l'alphabet ASL:
+This project compares two pipelines for static ASL alphabet recognition:
 
-- **Pipeline keypoints + MLP**: extraction de 21 landmarks MediaPipe puis classification d'un vecteur de 42 coordonnees.
-- **Pipeline image + CNN**: classification directe de crops RGB en 64x64.
+- **Keypoint + MLP pipeline**: 21 MediaPipe hand landmarks transformed into a 42D feature vector.
+- **Image + CNN pipeline**: direct classification of 64x64 RGB crops.
 
-Le depot contient:
+The repository includes:
 
-- le notebook historique (exploration et resultats initiaux),
-- une **V2 industrialisee** avec scripts CLI, sauvegarde de modeles, metriques enrichies et inference video stabilisee.
+- the original notebook used during the 2025 project phase,
+- a cleaner V2 codebase with CLI scripts, saved artifacts, richer metrics, and stabilized video inference.
 
-## Apercu visuel (placeholders)
+## Visual Placeholders
 
-> Ajoute tes captures plus tard dans `docs/screenshots/`.
+Add your screenshots later in `docs/screenshots/`.
 
 ![Confusion Matrix MLP](docs/screenshots/confusion_matrix_mlp.png)
 ![Confusion Matrix CNN](docs/screenshots/confusion_matrix_cnn.png)
 ![Inference Video Example](docs/screenshots/inference_video_example.png)
 
-## Resultats de reference (rapport)
+## Reference Results (Report)
 
-- **MLP sur keypoints**: **88,7 %** d'accuracy
-- **CNN sur images RGB**: **93,6 %** d'accuracy
+- **MLP on keypoints**: **88.7%** accuracy
+- **CNN on RGB images**: **93.6%** accuracy
 
-## Comparatif quantitatif (rapport)
+## Quantitative Comparison (Report)
 
-### 1. Classification statique
+### 1. Static Classification
 
-- Gain absolu CNN vs MLP: ~**+4,9 points** d'accuracy
-- Taille modele (ordre de grandeur):
-  - MLP: ~**30k** parametres
-  - CNN: ~**1,6M** parametres
+- Absolute gain (CNN vs MLP): about **+4.9 accuracy points**
+- Model size (order of magnitude):
+  - MLP: around **30k** parameters
+  - CNN: around **1.6M** parameters
 
-### 2. Inference video (tests du rapport)
+### 2. Video Inference (Report Tests)
 
-- FPS moyen (GTX T4):
+- Mean FPS (GTX T4):
   - MLP + landmarks: **90 FPS**
   - CNN + RGB: **42 FPS**
-- Erreur moyenne sequence (Levenshtein token-level):
-  - MLP + landmarks: **15,3**
-  - CNN + RGB: **7,8**
+- Mean token-level Levenshtein error:
+  - MLP + landmarks: **15.3**
+  - CNN + RGB: **7.8**
 
-Lecture rapide:
+Quick interpretation:
 
-- le **MLP** est plus rapide et plus compact;
-- le **CNN** est plus precis en reconnaissance reelle (meilleure robustesse sur la sequence de lettres);
-- le lissage temporel (majorite sur fenetre) reduit fortement les faux positifs transitoires en video.
+- **MLP** is faster and lighter.
+- **CNN** is more accurate for real-world sequence recognition.
+- Temporal smoothing (windowed majority strategy) reduces transient video misfires.
 
-## Analyse d'erreurs (rapport)
+## Error Analysis (Report)
 
-- Erreurs recurrentes sur des lettres morphologiquement proches: `C/Q`, `F/P`, `M/N`, `U/V/W`.
-- Pipeline landmarks (MLP): sensible aux **occlusions du pouce** et a la perte de main hors champ.
-- Pipeline RGB (CNN): sensible au **blur** et aux variations d'echelle extremes, mais meilleur sur les recouvrements partiels grace aux indices de texture/couleur.
+- Recurrent confusions on visually similar letters: `C/Q`, `F/P`, `M/N`, `U/V/W`.
+- Landmark pipeline (MLP): sensitive to thumb occlusions and hand-out-of-frame cases.
+- RGB pipeline (CNN): sensitive to blur and extreme scale changes, but stronger under partial finger overlap thanks to texture/color cues.
 
-## Ameliorations V2 implementees
+## Implemented V2 Improvements
 
-- separation claire des composants: pretraitement, entrainement, evaluation, inference;
-- extraction landmarks plus robuste:
-  - normalisation rotation + echelle paume,
-  - filtre de qualite,
-  - rejet des frames instables;
-- entrainement CNN avec augmentation de donnees;
-- option backbone pre-entraine leger (**MobileNetV2**);
-- evaluation plus complete:
+- clear separation of preprocessing, training, evaluation, and inference;
+- more robust landmark extraction:
+  - rotation and palm-scale normalization,
+  - quality filtering,
+  - unstable-frame rejection;
+- CNN data augmentation;
+- optional lightweight pretrained backbone (**MobileNetV2**);
+- extended evaluation:
   - accuracy,
-  - F1 macro,
-  - recall macro,
-  - rapport par classe,
-  - matrice de confusion sauvegardee;
-- sauvegarde systematique des artefacts (`.keras`, `classes.npy`, `metrics.json`);
-- inference video avec stabilisation temporelle (fenetre + EMA + seuil de confiance + dedoublonnage).
+  - macro F1,
+  - macro recall,
+  - per-class report,
+  - saved confusion matrix;
+- systematic artifact saving (`.keras`, `classes.npy`, `metrics.json`);
+- stabilized video inference (windowing + EMA + confidence threshold + deduplication).
 
-## Stack technique
+## Tech Stack
 
 - Python
 - TensorFlow / Keras
@@ -86,20 +86,20 @@ Lecture rapide:
 - matplotlib / seaborn
 - gTTS
 
-## Structure du depot (version commit)
+## Repository Structure
 
-- `Sign_Language_.ipynb`: notebook principal (version initiale)
-- `DL_Report.pdf`: rapport complet
-- `requirements.txt`: dependances Python
-- `src/asl_v2/config.py`: configurations d'entrainement
-- `src/asl_v2/data.py`: chargement images/keypoints et export CSV
-- `src/asl_v2/landmarks.py`: extraction robuste MediaPipe
-- `src/asl_v2/models.py`: architectures MLP/CNN (+ option pre-entrainee)
-- `src/asl_v2/evaluation.py`: metriques et matrice de confusion
-- `src/asl_v2/temporal.py`: stabilisation temporelle video
-- `scripts/train_mlp.py`: pipeline entrainement/evaluation MLP
-- `scripts/train_cnn.py`: pipeline entrainement/evaluation CNN
-- `scripts/infer_video.py`: inference video stabilisee
+- `Sign_Language_.ipynb`: original notebook (initial project phase)
+- `DL_Report.pdf`: full final report
+- `requirements.txt`: Python dependencies
+- `src/asl_v2/config.py`: training configurations
+- `src/asl_v2/data.py`: image/keypoint loading and CSV export
+- `src/asl_v2/landmarks.py`: robust MediaPipe extraction
+- `src/asl_v2/models.py`: MLP/CNN architectures (including pretrained option)
+- `src/asl_v2/evaluation.py`: metrics and confusion matrix utilities
+- `src/asl_v2/temporal.py`: temporal stabilization for video outputs
+- `scripts/train_mlp.py`: MLP train/eval pipeline
+- `scripts/train_cnn.py`: CNN train/eval pipeline
+- `scripts/infer_video.py`: stabilized video inference
 
 ## Installation
 
@@ -109,59 +109,59 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-## Utilisation
+## Usage
 
-### 1. Entrainement MLP (landmarks)
+### 1. Train MLP (landmarks)
 
 ```bash
 python scripts/train_mlp.py --dataset-root "C:\path\to\asl_alphabet_train"
 ```
 
-Options utiles:
+Useful options:
 
 - `--max-per-class 300`
 - `--epochs 30`
 - `--artifacts-dir artifacts/mlp`
 
-### 2. Entrainement CNN (images)
+### 2. Train CNN (images)
 
 ```bash
 python scripts/train_cnn.py --dataset-root "C:\path\to\asl_alphabet_train"
 ```
 
-Options utiles:
+Useful options:
 
-- `--use-pretrained` (active MobileNetV2)
+- `--use-pretrained` (enable MobileNetV2)
 - `--trainable-backbone`
 - `--max-per-class 500`
 
-### 3. Inference video stabilisee
+### 3. Run Stabilized Video Inference
 
-CNN:
+CNN mode:
 
 ```bash
 python scripts/infer_video.py --mode cnn --video "C:\path\to\video.mp4" --model artifacts/cnn/cnn_model.keras --classes artifacts/cnn/classes.npy
 ```
 
-MLP landmarks:
+MLP landmarks mode:
 
 ```bash
 python scripts/infer_video.py --mode mlp_landmarks --video "C:\path\to\video.mp4" --model artifacts/mlp/mlp_model.keras --classes artifacts/mlp/classes.npy
 ```
 
-## Competences demontrees
+## Skills Demonstrated
 
-- computer vision appliquee a la reconnaissance de gestes;
-- extraction et normalisation de points-cles;
-- entrainement et comparaison de modeles TensorFlow/Keras;
-- evaluation multiclasses et analyse d'erreurs;
-- conception d'une chaine d'inference de bout en bout plus proche d'un usage reel.
+- computer vision preprocessing for gesture recognition;
+- keypoint extraction and normalization;
+- TensorFlow/Keras model training and comparison;
+- multiclass evaluation and error analysis;
+- end-to-end inference pipeline design for practical use.
 
 ## Notes
 
-- Le dossier `artifacts/` est conserve vide pour accueillir les modeles et metriques generes localement.
-- Les captures d'ecran seront ajoutees ulterieurement dans `docs/screenshots/`.
+- `artifacts/` is intentionally kept as a tracked empty folder (`.gitkeep`) for local outputs.
+- Screenshots can be added later in `docs/screenshots/`.
 
-## Resume candidature (copiable CV)
+## CV-Ready Summary
 
-Projet Deep Learning de reconnaissance de l'alphabet ASL statique comparant deux pipelines (MediaPipe landmarks + MLP vs RGB + CNN), avec evaluation multiclasses, inference image/video et stabilisation temporelle. Resultats du rapport: **88,7 %** (MLP) vs **93,6 %** (CNN), avec un compromis clair entre vitesse (MLP: **90 FPS**) et precision sequence (CNN: erreur Levenshtein **7,8** vs **15,3**).
+Deep learning project (2025) for static ASL alphabet recognition comparing two pipelines (MediaPipe landmarks + MLP vs RGB + CNN), with multiclass evaluation, image/video inference, and temporal stabilization. Reported performance: **88.7%** (MLP) vs **93.6%** (CNN), with a clear speed-accuracy trade-off (MLP: **90 FPS**, CNN token error: **7.8** vs **15.3** for MLP).
