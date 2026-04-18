@@ -18,9 +18,9 @@ The repository includes:
 
 Add your screenshots later in `docs/screenshots/`.
 
-![Confusion Matrix MLP](docs/screenshots/confusion_matrix_mlp.png)
-![Confusion Matrix CNN](docs/screenshots/confusion_matrix_cnn.png)
-![Inference Video Example](docs/screenshots/inference_video_example.png)
+![Confusion Matrix CNN]![alt text](image.png)
+![Confusion Matrix MLP]![alt text](image-1.png)
+![Inference Video Example]docs/test_videos/video2.mp4
 
 ## Reference Results (Report)
 
@@ -157,11 +157,3 @@ python scripts/infer_video.py --mode mlp_landmarks --video "C:\path\to\video.mp4
 - multiclass evaluation and error analysis;
 - end-to-end inference pipeline design for practical use.
 
-## Notes
-
-- `artifacts/` is intentionally kept as a tracked empty folder (`.gitkeep`) for local outputs.
-- Screenshots can be added later in `docs/screenshots/`.
-
-## CV-Ready Summary
-
-Deep learning project (2025) for static ASL alphabet recognition comparing two pipelines (MediaPipe landmarks + MLP vs RGB + CNN), with multiclass evaluation, image/video inference, and temporal stabilization. Reported performance: **88.7%** (MLP) vs **93.6%** (CNN), with a clear speed-accuracy trade-off (MLP: **90 FPS**, CNN token error: **7.8** vs **15.3** for MLP).
